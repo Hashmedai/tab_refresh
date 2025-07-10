@@ -31,7 +31,7 @@ chrome.runtime.onStartup.addListener( () => {
 // Listener to pause switching tabs while configuring settings in popup.html
 chrome.runtime.onMessage.addListener(
 	function (message, sender, sendResponse) {
-		console.log("message swtichitng "+message)
+		//console.log("message swtichitng "+message)
 		if (message === 'stopSwitching') {
 			setPauseOnConfig(1)
 		}
@@ -82,16 +82,15 @@ function switchRefreshTabs () {
 	// Do not switch if settings windows open
 	if (pauseOnConfig==0){
 	
-	// Force full screen after page reload
-	// Async function call to check if is in full screen
-	// Then put in fullscreen only if needed
-	checkFullscreen(chrome.windows.WINDOW_ID_CURRENT).then((isFullScreenSet) => {	
-		if(fullScreen && !isFullScreenSet){
-			console.log('set ful screen')
-			chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT,{state: 'fullscreen'})
-		}
-	})
-		
+		// Force full screen after page reload
+		// Async function call to check if is in full screen
+		// Then put in fullscreen only if needed
+		checkFullscreen(chrome.windows.WINDOW_ID_CURRENT).then((isFullScreenSet) => {	
+			if(fullScreen && !isFullScreenSet){
+				//console.log('set ful screen')
+				chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT,{state: 'fullscreen'})
+			}
+		})
 
 		chrome.tabs.query({active: true}, function(tabs) {
 			var tabIndex = tabs[0].index
@@ -126,12 +125,12 @@ function switchRefreshTabs () {
 				}
 				
 				if (switchTab){
-					console.log('tab to open  '+tabToOpen)
+					//console.log('tab to open  '+tabToOpen+' time '+datetime)
 					chrome.tabs.update(tabs[tabToOpen].id, {active: true})
 				}
 				
 				if(refreshCycleCalc <= 1 && refreshTab){
-					console.log('tab reload  '+tabToRefresh)
+					//console.log('tab reload  '+tabToRefresh+' time '+datetime)
 					chrome.tabs.reload(tabs[tabToRefresh].id)
 				}
 
@@ -158,6 +157,6 @@ function movingInterval() {
 	switchRefreshTabs();
 	run = setInterval(movingInterval, switchTabTimer); // start the setInterval()
 }
-
+updateTimers();
 var run = setInterval(movingInterval, switchTabTimer); // start setInterval as "run"
 
