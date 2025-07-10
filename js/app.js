@@ -1,6 +1,6 @@
 var cptRefreshCycle = 1
 //Switch between tab timer in seconds
-var switchTabTimer = 20
+var switchTabTimer = 5
 // Activate/deactivate switchTab
 var switchTab = false
 // Reload timer in minutes
@@ -31,6 +31,7 @@ chrome.runtime.onStartup.addListener( () => {
 // Listener to pause switching tabs while configuring settings in popup.html
 chrome.runtime.onMessage.addListener(
 	function (message, sender, sendResponse) {
+		console.log("message swtichitng "+message)
 		if (message === 'stopSwitching') {
 			setPauseOnConfig(1)
 		}
@@ -39,6 +40,7 @@ chrome.runtime.onMessage.addListener(
 		}
 	}
 );
+
 function setPauseOnConfig(value){
 	pauseOnConfig = value
 }
@@ -63,6 +65,14 @@ function updateTimers () {
 	)
 	//console.log("Update timers : "+pauseOnConfig);
 }
+async function checkFullscreen(windowId) {
+  	const window = await chrome.windows.get(windowId)
+	if (window.state === "fullscreen") {
+		return true;
+	} else {
+		return false;
+	}
+}
 function switchRefreshTabs () {
 	// Debug timer between reload part 1
 	var currentdate = new Date() 
@@ -71,8 +81,17 @@ function switchRefreshTabs () {
 	
 	// Do not switch if settings windows open
 	if (pauseOnConfig==0){
-		// Force full screen after page reload
-		if(fullScreen)chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT,{state: 'fullscreen'})
+	
+	// Force full screen after page reload
+	// Async function call to check if is in full screen
+	// Then put in fullscreen only if needed
+	checkFullscreen(chrome.windows.WINDOW_ID_CURRENT).then((isFullScreenSet) => {	
+		if(fullScreen && !isFullScreenSet){
+			console.log('set ful screen')
+			chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT,{state: 'fullscreen'})
+		}
+	})
+		
 
 		chrome.tabs.query({active: true}, function(tabs) {
 			var tabIndex = tabs[0].index
@@ -105,9 +124,14 @@ function switchRefreshTabs () {
 						tabsTitle[tabToOpen] = tabs[tabToOpen].title
 					}
 				}
-				if (switchTab)chrome.tabs.update(tabs[tabToOpen].id, {active: true})
+				
+				if (switchTab){
+					console.log('tab to open  '+tabToOpen)
+					chrome.tabs.update(tabs[tabToOpen].id, {active: true})
+				}
 				
 				if(refreshCycleCalc <= 1 && refreshTab){
+					console.log('tab reload  '+tabToRefresh)
 					chrome.tabs.reload(tabs[tabToRefresh].id)
 				}
 

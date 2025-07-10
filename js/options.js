@@ -18,7 +18,8 @@ const saveOptions = () => {
         }, 750);
       }
     );
-    
+    // Reload extension after saving settings
+    chrome.runtime.reload();
   };
   // Restores select box and checkbox state using the preferences
   // stored in chrome.storage.
@@ -39,10 +40,10 @@ const saveOptions = () => {
   };
   // Send message to app.js to pause when config windows/popup loaded
   const startPauseONconfig = () => {
-    if (document.visibilityState === "hidden") {
-      chrome.runtime.sendMessage('startSwitching');
-    } else{
+    if (document.visibilityState === "visible") {
       chrome.runtime.sendMessage('stopSwitching');
+    } else{
+      chrome.runtime.sendMessage('startSwitching');
     }
   };
 
