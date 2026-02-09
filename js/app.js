@@ -130,11 +130,12 @@ function switchRefreshTabs() {
 				}
 
 				if (switchTab) {
+					//console.log('Tab Switch : ' + allTabs[tabToOpen].url, + ' - time : ' + datetime);
 					chrome.tabs.update(allTabs[tabToOpen].id, {active: true});
 				}
 
 				if (refreshCycleCalc <= 1 && refreshTab) {
-					//console.log('Refresh tab : ' + allTabs[activeTabIndex].url + ' - Refresh cycle : ' + datetime);
+					//console.log('Refresh tab : ' + allTabs[activeTabIndex].url + ' - time : ' + datetime);
 					chrome.tabs.reload(allTabs[activeTabIndex].id);
 				}
 
