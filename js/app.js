@@ -116,17 +116,24 @@ function switchRefreshTabs() {
                                                    : refreshTabTimer / (tabsState.cptRefreshCycle * switchTabTimer);
 
 				if (!tabReload) {
+					//console.log('Tab Reload deactivated : ' + tabReload);
 					tabsState.tabsUrl.length = 0;
 					tabsState.tabsTitle.length = 0;
 				} else {
-
+					// Check for active tab if tabswitch not activated.
+					if (!switchTab){
+						tabToOpen=activeTabIndex;
+					}
+					//console.log('Tab Reload activated : ' + tabReload);
 					// initialize the tabsUrl and tabsTitle arrays if they are empty
 					if (tabsState.tabsUrl[tabToOpen] == null) {
+						//console.log('Tab Reload index null for  : ' + allTabs[tabToOpen].url);
 						tabsState.tabsUrl[tabToOpen] = allTabs[tabToOpen].url;
 						tabsState.tabsTitle[tabToOpen] = allTabs[tabToOpen].title;
 					} else if (allTabs[tabToOpen].url !== tabsState.tabsUrl[tabToOpen] || allTabs[tabToOpen].title !== tabsState.tabsTitle[tabToOpen]) {
 						chrome.tabs.update(allTabs[tabToOpen].id, { url: tabsState.tabsUrl[tabToOpen] });
 					}
+					
 				}
 
 				if (switchTab) {
