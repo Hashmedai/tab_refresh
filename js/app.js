@@ -1,23 +1,23 @@
-var cptRefreshCycle = 1
+let cptRefreshCycle = 1
 //Switch between tab timer in seconds
-var switchTabTimer = 5
+let switchTabTimer = 5
 // Activate/deactivate switchTab
-var switchTab = false
+let switchTab = false
 // Reload timer in minutes
-var refreshTabTimer = 10
+let refreshTabTimer = 10
 // Activate/deactivate refresh
-var refreshTab = ""
+let refreshTab = ""
 // Activate/deactivate Fullscreen
-var fullScreen = false
+let fullScreen = false
 // Activate/Deactivate Tab URLs memory
-var tabReload = false
+let tabReload = false
 // Pause while config panel actif
-var pauseOnConfig = 0
+let pauseOnConfig = 0
 
-var tabsUrl = []
-var tabsTitle = []
-var datetime = ""
-var lastdatetime = ""
+const tabsUrl = []
+const tabsTitle = []
+let datetime = ""
+let lastdatetime = ""
 
 // switchTabTimer and refreshTabTimer timers convertion in miliseconds
 switchTabTimer = switchTabTimer*1000
