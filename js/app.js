@@ -77,7 +77,7 @@ async function checkFullscreen(windowId) {
 }
 function switchRefreshTabs() {
 	// Debug timer between reload part 1
-	var currentdate = new Date();
+	let currentdate = new Date();
 	datetime = "Last Sync: " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
 
 	if (pauseOnConfig === 0) {
@@ -169,5 +169,5 @@ function movingInterval() {
 }
 
 updateTimers();
-var run = setInterval(movingInterval, switchTabTimer); // start setInterval as "run"
+let run = setInterval(movingInterval, switchTabTimer); // start setInterval as "run"
 
